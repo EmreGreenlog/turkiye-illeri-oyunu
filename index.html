@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#102a43" />
+    <title>81 İl | Sıra Sende</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section id="setup-screen" class="screen setup-screen">
+        <div class="hero-mark" aria-hidden="true">81</div>
+        <p class="eyebrow">TÜRKİYE İLLERİ</p>
+        <h1>Sıra sende!</h1>
+        <p class="intro">Bir il söyle, tekrar etme, süreyi kaçırma. Son ayakta kalan kazanır.</p>
+
+        <form id="setup-form" class="card" novalidate>
+          <label for="player-count">Kaç kişi oynuyor?</label>
+          <div class="count-control">
+            <button type="button" id="minus-button" aria-label="Oyuncu azalt">−</button>
+            <output id="player-count-value" for="player-count">4</output>
+            <button type="button" id="plus-button" aria-label="Oyuncu artır">+</button>
+          </div>
+          <input id="player-count" type="range" min="2" max="8" value="4" aria-label="Oyuncu sayısı" />
+          <div id="names-wrap" class="names-wrap"></div>
+          <div class="setting-divider"></div>
+          <label for="duration">Tur süresi</label>
+          <div class="count-control duration-control">
+            <button type="button" id="duration-minus-button" aria-label="Süreyi azalt">−</button>
+            <output id="duration-value" for="duration">2 dk</output>
+            <button type="button" id="duration-plus-button" aria-label="Süreyi artır">+</button>
+          </div>
+          <input id="duration" type="range" min="1" max="10" value="2" aria-label="Tur süresi (dakika)" />
+          <p id="setup-error" class="error-message" role="alert"></p>
+          <button class="primary-button" type="submit">Oyunu başlat <span>→</span></button>
+        </form>
+        <p class="rule-note">Her oyuncunun yeni bir il bulmak için seçtiğiniz süre kadar zamanı var.</p>
+      </section>
+
+      <section id="game-screen" class="screen game-screen hidden" aria-live="polite">
+        <header class="game-header">
+          <button id="new-game-button" class="text-button" type="button">‹ Yeni oyun</button>
+          <div class="progress-label"><span id="used-count">0</span> / 81 il</div>
+        </header>
+
+        <div class="turn-card">
+          <p class="eyebrow">ŞİMDİKİ OYUNCU</p>
+          <h2 id="current-player">Oyuncu</h2>
+          <div id="timer" class="timer" aria-label="Kalan süre">02:00</div>
+          <div class="timer-bar"><div id="timer-fill"></div></div>
+          <p id="turn-message" class="turn-message">Yeni bir il yaz ve turu bitir.</p>
+        </div>
+
+        <form id="city-form" class="city-form" novalidate>
+          <label for="city-input">Söylediğin il</label>
+          <div class="city-input-row">
+            <input id="city-input" type="text" inputmode="text" autocomplete="off" autocapitalize="words" placeholder="Örn. Ankara" />
+            <button id="voice-button" class="voice-button" type="button" aria-label="Sesle il söyle" title="Sesle söyle">⌁</button>
+            <button class="primary-button submit-city" type="submit">Söyle</button>
+          </div>
+          <p id="city-error" class="error-message" role="alert"></p>
+        </form>
+
+        <section class="used-section">
+          <div class="section-heading">
+            <h3>Söylenen iller</h3>
+            <button id="show-all-button" class="text-button" type="button">Tümünü göster</button>
+          </div>
+          <div id="used-cities" class="city-chips"><p class="empty-list">Henüz hiçbir il söylenmedi.</p></div>
+        </section>
+
+        <section class="players-section">
+          <h3>Oyuncular</h3>
+          <div id="players-list" class="players-list"></div>
+        </section>
+      </section>
+
+      <section id="winner-screen" class="screen winner-screen hidden">
+        <div class="trophy" aria-hidden="true">★</div>
+        <p class="eyebrow">OYUN BİTTİ</p>
+        <h1 id="winner-title">Kazanan</h1>
+        <p id="winner-copy" class="intro"></p>
+        <div id="summary-cities" class="summary-cities"></div>
+        <button id="play-again-button" class="primary-button" type="button">Tekrar oyna <span>↻</span></button>
+      </section>
+    </main>
+    <dialog id="cities-dialog">
+      <div class="dialog-header"><h2>Söylenen iller</h2><button id="close-dialog" class="icon-button" aria-label="Kapat">×</button></div>
+      <div id="dialog-cities" class="city-chips"></div>
+    </dialog>
+    <script src="app.js"></script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');</script>
+  </body>
+</html>

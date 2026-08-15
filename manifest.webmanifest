@@ -1,0 +1,10 @@
+{
+  "name": "81 İl: Sıra Sende",
+  "short_name": "81 İl",
+  "lang": "tr",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f3eb",
+  "theme_color": "#102a43",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
