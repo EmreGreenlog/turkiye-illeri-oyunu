@@ -15,7 +15,7 @@ Oyun tek cihaz üzerinden, oyuncuların sırayla aynı telefonu kullanmasıyla o
 
 1. Oyuncu sayısını 2–8 arasında seçin.
 2. Her oyuncunun adını girin. İsimler farklı olmalıdır.
-3. Her tur için süreyi 1–10 dakika arasında belirleyin. Varsayılan süre 2 dakikadır.
+3. Her tur için süreyi 30 saniye veya 1–10 dakika arasında belirleyin. Varsayılan süre 2 dakikadır.
 4. **Oyunu başlat** düğmesine basın.
 
 ## Nasıl oynanır?

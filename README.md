@@ -3,7 +3,7 @@
 Telefon tarayıcısında `index.html` dosyasını açın. Oyun tamamen tek cihaz üzerinden sırayla oynanır.
 
 - 2–8 oyuncu adıyla kurulur.
-- Tur süresi 1–10 dakika arasında seçilir (varsayılan: 2 dakika).
+- Tur süresi 30 saniye veya 1–10 dakika arasında seçilir (varsayılan: 2 dakika).
 - Oyuncu sayısı değişse bile yazılmış isimler korunur.
 - Geçerli ve daha önce söylenmemiş bir Türkiye ili yazılır.
 - Destekleyen telefonlarda mikrofon düğmesiyle il sesli olarak da girilebilir.

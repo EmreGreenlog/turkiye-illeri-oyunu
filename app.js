@@ -1,7 +1,8 @@
 const CITIES = ["Adana","Adıyaman","Afyonkarahisar","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
+const DURATIONS = [30, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600];
 
 const $ = (id) => document.getElementById(id);
-const state = { playerCount: 4, draftNames: Array(8).fill(''), durationMinutes: 2, players: [], currentIndex: 0, used: [], seconds: 120, interval: null };
+const state = { playerCount: 4, draftNames: Array(8).fill(''), durationIndex: 2, players: [], currentIndex: 0, used: [], seconds: 120, interval: null };
 const escapeHTML = (value) => value.replace(/[&<>'"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[char]);
 
 function normalize(value) {
@@ -15,8 +16,10 @@ function renderNameInputs() {
 }
 function saveVisibleNames() { document.querySelectorAll('.name-field').forEach(input => { state.draftNames[Number(input.dataset.playerIndex)] = input.value; }); }
 function setPlayerCount(next) { saveVisibleNames(); state.playerCount = Math.max(2, Math.min(8, next)); renderNameInputs(); }
-function renderDuration() { $('duration-value').textContent = `${state.durationMinutes} dk`; $('duration').value = state.durationMinutes; }
-function setDuration(next) { state.durationMinutes = Math.max(1, Math.min(10, next)); renderDuration(); }
+function durationSeconds() { return DURATIONS[state.durationIndex]; }
+function formatDuration(seconds) { return seconds < 60 ? `${seconds} sn` : `${seconds / 60} dk`; }
+function renderDuration() { $('duration-value').textContent = formatDuration(durationSeconds()); $('duration').value = state.durationIndex; }
+function setDuration(next) { state.durationIndex = Math.max(0, Math.min(DURATIONS.length - 1, next)); renderDuration(); }
 function showScreen(name) { ['setup','game','winner'].forEach((screen) => $(screen + '-screen').classList.toggle('hidden', screen !== name)); }
 function activePlayers() { return state.players.filter(p => p.active); }
 function sortedUsedCities() { return [...state.used].sort((a, b) => a.localeCompare(b, 'tr-TR')); }
@@ -30,7 +33,7 @@ function renderGame() {
   updateTimerUI();
 }
 function updateTimerUI() {
-  const pct = Math.max(0, state.seconds / (state.durationMinutes * 60) * 100);
+  const pct = Math.max(0, state.seconds / durationSeconds() * 100);
   $('timer').textContent = formatTime(state.seconds);
   $('timer-fill').style.width = pct + '%';
   $('timer').className = 'timer' + (state.seconds <= 15 ? ' danger' : state.seconds <= 30 ? ' warning' : '');
@@ -38,7 +41,7 @@ function updateTimerUI() {
 }
 function startTimer() {
   clearInterval(state.interval);
-  state.seconds = state.durationMinutes * 60;
+  state.seconds = durationSeconds();
   updateTimerUI();
   state.interval = setInterval(() => {
     state.seconds -= 1;
@@ -76,8 +79,8 @@ function advanceTurn() {
 $('minus-button').addEventListener('click', () => setPlayerCount(state.playerCount - 1));
 $('plus-button').addEventListener('click', () => setPlayerCount(state.playerCount + 1));
 $('player-count').addEventListener('input', e => setPlayerCount(Number(e.target.value)));
-$('duration-minus-button').addEventListener('click', () => setDuration(state.durationMinutes - 1));
-$('duration-plus-button').addEventListener('click', () => setDuration(state.durationMinutes + 1));
+$('duration-minus-button').addEventListener('click', () => setDuration(state.durationIndex - 1));
+$('duration-plus-button').addEventListener('click', () => setDuration(state.durationIndex + 1));
 $('duration').addEventListener('input', e => setDuration(Number(e.target.value)));
 $('setup-form').addEventListener('submit', (e) => {
   e.preventDefault();
